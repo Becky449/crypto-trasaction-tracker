@@ -1,25 +1,26 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-
 const transactionRoutes = require('./routes/transactionRoutes');
 
 const app = express();
+const port = process.env.PORT || 5000;
+
+// Middleware
 app.use(express.json());
 
-// Connect to MongoDB
+// MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error('MongoDB connection error:', err));
 
-// Use the transaction routes
+// Routes
 app.use('/api', transactionRoutes);
 
 // Start the server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
